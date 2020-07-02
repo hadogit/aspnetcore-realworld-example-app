@@ -21,9 +21,11 @@ pipeline {
 				sh 'dotnet test -l:trx;LogFileName=.\testResult.xml'
             }
 			post{
-				 xunit (
-                thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-                tools: [ BoostTest(pattern: 'testResult/*.xml') ])
+				always{
+					xunit (
+					thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
+					tools: [ BoostTest(pattern: 'testResult/*.xml') ])
+				}
 			}
         }
 		stage('Publish Artifacts') { 
